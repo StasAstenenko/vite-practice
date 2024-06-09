@@ -1,6 +1,7 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import icon from './public/favicon.svg';
+import './js/switcher';
 
 // ЗАДАЧА 1
 // Якщо імейл і пароль користувача збігаються, зберігай дані з форми при сабміті
@@ -96,20 +97,32 @@ import icon from './public/favicon.svg';
 // Якщо значення парне, вирішуй проміс та повертай "even" через 1 секунду.
 // Якщо значення не парне, вирішуй проміс та повертай "odd" через 2 секунди.
 
-const value = prompt('Enter value');
+// const value = prompt('Enter value');
 
-function checkValue(value) {
-  return new Promise((resolve, reject) => {
-    const valueNumber = Number(value);
+// function checkValue(value) {
+//   return new Promise((resolve, reject) => {
+//     const valueNumber = Number(value);
 
-    if (Number.isNaN(valueNumber)) reject('Error');
+//     if (Number.isNaN(valueNumber)) reject('Error');
 
-    if (valueNumber % 2 === 0) setTimeout(() => resolve('even'), 1000);
+//     if (valueNumber % 2 === 0) setTimeout(() => resolve('even'), 1000);
 
-    if (valueNumber % 2 !== 0) setTimeout(() => resolve('odd'), 2000);
-  });
-}
+//     if (valueNumber % 2 !== 0) setTimeout(() => resolve('odd'), 2000);
+//   });
+// }
 
-checkValue(value)
-  .then(res => console.log(res))
-  .catch(err => console.log(err));
+// checkValue(value)
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err));
+
+// Додай відображення дати і часу в реальному часі
+// <p class="date">Current data and time: <span></span></p>
+
+// const dateElem = document.querySelector('.date span');
+
+// dateElem.textContent = new Date().toLocaleString('pl');
+
+// setInterval(
+//   () => (dateElem.textContent = new Date().toLocaleString('pl')),
+//   1000
+// );
