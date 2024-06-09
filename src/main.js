@@ -1,4 +1,4 @@
-import iziToast from "izitoast";
+import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import icon from './public/favicon.svg';
 
@@ -12,8 +12,6 @@ import icon from './public/favicon.svg';
 // З локального сховища.
 // Якщо введені дані не збігаються з потрібними даними, викликати аlert і
 // повідомляти про помилку.
-
-
 
 // const USER_DATA = {
 //   email: "user@mail.com",
@@ -40,14 +38,13 @@ import icon from './public/favicon.svg';
 //         passElem.removeAttribute('readonly');
 
 //         btnElem.textContent = 'Login';
-//         return; 
+//         return;
 //     }
 
 //     if (email === '' || password === '') return iziToast.warning({
 //             message: 'Треба заповнити усі поля',
 //             iconUrl: icon
 //         });
-
 
 //     if (email !== USER_DATA.email || password !== USER_DATA.password)  return iziToast.error({
 //             message: 'Не вірний пароль або імейл',
@@ -91,3 +88,28 @@ import icon from './public/favicon.svg';
 // });
 
 // promise.then(message => console.log(message));
+
+// - Використовуй prompt та повертай значення звідти.
+// - Створи функцію, яка буде набувати значення з prompt і повертатиме проміс.
+// Додай перевірку:
+// Якщо значення не є числом, відхиляй проміс та логіруй "error".
+// Якщо значення парне, вирішуй проміс та повертай "even" через 1 секунду.
+// Якщо значення не парне, вирішуй проміс та повертай "odd" через 2 секунди.
+
+const value = prompt('Enter value');
+
+function checkValue(value) {
+  return new Promise((resolve, reject) => {
+    const valueNumber = Number(value);
+
+    if (Number.isNaN(valueNumber)) reject('Error');
+
+    if (valueNumber % 2 === 0) setTimeout(() => resolve('even'), 1000);
+
+    if (valueNumber % 2 !== 0) setTimeout(() => resolve('odd'), 2000);
+  });
+}
+
+checkValue(value)
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
