@@ -9,15 +9,24 @@
     <script type="module" crossorigin src="/vite-practice/commonHelpers.js"></script>
     <link rel="modulepreload" crossorigin href="/vite-practice/assets/vendor-86291ea8.js">
     <link rel="stylesheet" href="/vite-practice/assets/vendor-e5212ee8.css">
-    <link rel="stylesheet" href="/vite-practice/assets/index-b635ebca.css">
+    <link rel="stylesheet" href="/vite-practice/assets/index-025afc56.css">
   </head>
   <body>
+    <div class="switcher">
+      <label class="switcher-track">
+        <input type="checkbox" class="switcher-toggle" />
+        <span class="switcher-marker"></span>
+      </label>
+    </div>
+
     <form class="login-form" id="login-form">
       <input class="login-input" type="email" name="email" />
       <input class="login-input" type="password" name="password" />
       <button class="login-btn" name="button" type="submit">Login</button>
     </form>
-    
+
+    <p class="date">Current data and time: <span></span></p>
+
     
   </body>
 </html>
