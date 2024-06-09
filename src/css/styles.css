@@ -103,3 +103,21 @@
 .switcher-toggle:checked + .switcher-marker {
   transform: translateX(20px);
 }
+
+.dark{
+  background-color: #242424;
+  color: #f1f1f1;
+}
+
+.light{
+  background-color: #fff;
+  color: #242424;
+}
+
+.light .date{
+  color: #8bc34a;
+}
+
+.dark .date{
+  color: tomato;
+}
