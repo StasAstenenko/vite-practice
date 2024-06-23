@@ -11,18 +11,16 @@ const container = document.getElementById('tui-pagination-container');
 const form = document.querySelector('.js-search-form');
 const loader = document.querySelector('.loader');
 
-
-
-const options = { // below default value of options
+const options = {
+  // below default value of options
   totalItems: 0,
   itemsPerPage: 12,
   visiblePages: 5,
   page: 1,
-}
+};
 const pagination = new Pagination(container, options);
 
 const currentPage = pagination.getCurrentPage();
-
 
 api
   .getPopularPhotos(currentPage)
@@ -50,7 +48,7 @@ form.addEventListener('submit', async e => {
       message: 'Enter photo name',
     });
     return;
-  };
+  }
 
   api.query = inputValue;
   pagination.off('afterMove', popular);
@@ -66,7 +64,7 @@ form.addEventListener('submit', async e => {
     }
     iziToast.success({
       message: `We found ${data.total}`,
-    })
+    });
     const markup = galleryTemplate(data.results);
     galleryList.innerHTML = markup;
     pagination.reset(data.total);
@@ -78,46 +76,48 @@ form.addEventListener('submit', async e => {
   } finally {
     hideLoader();
     form.reset();
-  };
+  }
   pagination.on('afterMove', byQuery);
 });
 
 function popular(event) {
   const currentPage = event.page;
-  showLoader()
-    api
-  .getPopularPhotos(currentPage)
-  .then(data => {
-    const markup = galleryTemplate(data.results);
-    galleryList.innerHTML = markup;
-  })
-  .catch(err => {
-    console.log(err);
-    iziToast.error({
-      message: 'Error',
+  showLoader();
+  api
+    .getPopularPhotos(currentPage)
+    .then(data => {
+      const markup = galleryTemplate(data.results);
+      galleryList.innerHTML = markup;
+    })
+    .catch(err => {
+      console.log(err);
+      iziToast.error({
+        message: 'Error',
+      });
+    })
+    .finally(() => {
+      hideLoader();
     });
-  }).finally(()=>{
-    hideLoader()
-  }); 
 }
 
 function byQuery(event) {
   const currentPage = event.page;
-  showLoader()
-    api
-  .searchPhoto(currentPage)
-  .then(data => {
-    const markup = galleryTemplate(data.results);
-    galleryList.innerHTML = markup;
-  })
-  .catch(err => {
-    console.log(err);
-    iziToast.error({
-      message: 'Error',
+  showLoader();
+  api
+    .searchPhoto(currentPage)
+    .then(data => {
+      const markup = galleryTemplate(data.results);
+      galleryList.innerHTML = markup;
+    })
+    .catch(err => {
+      console.log(err);
+      iziToast.error({
+        message: 'Error',
+      });
+    })
+    .finally(() => {
+      hideLoader();
     });
-  }).finally(()=>{
-    hideLoader()
-  }); ; 
 }
 
 function showLoader() {
@@ -127,3 +127,9 @@ function showLoader() {
 function hideLoader() {
   loader.classList.add('visually-hidden');
 }
+
+galleryList.addEventListener('click', e => {
+  if (e.target.nodeName !== 'IMG') return;
+  const id = e.target.closest('li').id;
+  console.log(id);
+});
