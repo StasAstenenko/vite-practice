@@ -1,4 +1,5 @@
 import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 import { UnsplashAPI } from './UnsplashAPI';
 import { galleryTemplate } from './render_function';
 import Pagination from 'tui-pagination'; /* ES6 */
@@ -36,21 +37,7 @@ api
     });
   });
 
-pagination.on('afterMove', (event) => {
-    const currentPage = event.page;
-    api
-  .getPopularPhotos(currentPage)
-  .then(data => {
-    const markup = galleryTemplate(data.results);
-    galleryList.innerHTML = markup;
-  })
-  .catch(err => {
-    console.log(err);
-    iziToast.error({
-      message: 'Error',
-    });
-  }); 
-});
+pagination.on('afterMove', popular);
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
@@ -64,14 +51,56 @@ form.addEventListener('submit', async e => {
   };
 
   api.query = inputValue;
+  pagination.off('afterMove', popular);
+  pagination.off('afterMove', byQuery);
   try {
     const data = await api.searchPhoto(currentPage);
+    if (data.results.length === 0) {
+      iziToast.info({
+        message: 'Not found photo',
+      });
+      return;
+    }
+    iziToast.success({
+      message: `We found ${data.total}`,
+    })
     const markup = galleryTemplate(data.results);
     galleryList.innerHTML = markup;
     pagination.reset(data.total);
   } catch (err) {
   console.log(err);
   };
-
-
+  pagination.on('afterMove', byQuery);
 });
+
+function popular(event) {
+    const currentPage = event.page;
+    api
+  .getPopularPhotos(currentPage)
+  .then(data => {
+    const markup = galleryTemplate(data.results);
+    galleryList.innerHTML = markup;
+  })
+  .catch(err => {
+    console.log(err);
+    iziToast.error({
+      message: 'Error',
+    });
+  }); 
+}
+
+function byQuery(event) {
+  const currentPage = event.page;
+    api
+  .searchPhoto(currentPage)
+  .then(data => {
+    const markup = galleryTemplate(data.results);
+    galleryList.innerHTML = markup;
+  })
+  .catch(err => {
+    console.log(err);
+    iziToast.error({
+      message: 'Error',
+    });
+  }); 
+}
