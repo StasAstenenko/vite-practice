@@ -9,6 +9,7 @@ const api = new UnsplashAPI();
 const galleryList = document.querySelector('.js-gallery');
 const container = document.getElementById('tui-pagination-container');
 const form = document.querySelector('.js-search-form');
+const loader = document.querySelector('.loader');
 
 
 
@@ -41,6 +42,7 @@ pagination.on('afterMove', popular);
 
 form.addEventListener('submit', async e => {
   e.preventDefault();
+
   const inputValue = e.target.elements.query.value.trim();
 
   if (inputValue === '') {
@@ -53,6 +55,7 @@ form.addEventListener('submit', async e => {
   api.query = inputValue;
   pagination.off('afterMove', popular);
   pagination.off('afterMove', byQuery);
+  showLoader();
   try {
     const data = await api.searchPhoto(currentPage);
     if (data.results.length === 0) {
@@ -68,13 +71,20 @@ form.addEventListener('submit', async e => {
     galleryList.innerHTML = markup;
     pagination.reset(data.total);
   } catch (err) {
-  console.log(err);
+    console.log(err);
+    iziToast.error({
+      message: 'Error',
+    });
+  } finally {
+    hideLoader();
+    form.reset();
   };
   pagination.on('afterMove', byQuery);
 });
 
 function popular(event) {
-    const currentPage = event.page;
+  const currentPage = event.page;
+  showLoader()
     api
   .getPopularPhotos(currentPage)
   .then(data => {
@@ -86,11 +96,14 @@ function popular(event) {
     iziToast.error({
       message: 'Error',
     });
+  }).finally(()=>{
+    hideLoader()
   }); 
 }
 
 function byQuery(event) {
   const currentPage = event.page;
+  showLoader()
     api
   .searchPhoto(currentPage)
   .then(data => {
@@ -102,5 +115,15 @@ function byQuery(event) {
     iziToast.error({
       message: 'Error',
     });
-  }); 
+  }).finally(()=>{
+    hideLoader()
+  }); ; 
+}
+
+function showLoader() {
+  loader.classList.remove('visually-hidden');
+}
+
+function hideLoader() {
+  loader.classList.add('visually-hidden');
 }
