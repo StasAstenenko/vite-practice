@@ -62,6 +62,12 @@ form.addEventListener('submit', async e => {
       });
       return;
     }
+    if (data.total <= 12) {
+      container.classList.add('visually-hidden');
+    } else {
+      container.classList.remove('visually-hidden');
+    }
+
     iziToast.success({
       message: `We found ${data.total}`,
     });
